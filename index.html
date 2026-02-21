@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Crepería Coffee House</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+:root{
+  --gold:#d4af37;
+  --dark:#0f0f0f;
+  --card:#1c1c1c;
+  --text:#f5f5f5;
+  --bg-gradient:linear-gradient(135deg,#0f0f0f,#1a1a1a);
+}
+
+body.light{
+  --bg-gradient:#f5f5f5;
+  --card:#ffffff;
+  --text:#1a1a1a;
+}
+
+body{
+  background:var(--bg-gradient);
+  font-family:'Poppins',sans-serif;
+  color:var(--text);
+  transition:.3s;
+}
+
+/* NAVBAR */
+.navbar{
+  background: rgba(0,0,0,.7);
+  backdrop-filter: blur(10px);
+  border-bottom:1px solid rgba(255,255,255,.1);
+}
+body.light .navbar{ background:#fff; }
+.navbar-brand{
+  font-weight:700;
+  letter-spacing:1px;
+  color:var(--gold)!important;
+}
+
+/* HERO */
+.hero{
+  height:35vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  background: linear-gradient(rgba(0,0,0,.7),rgba(0,0,0,.7)),
+  url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085') center/cover;
+}
+.hero h1{ font-size:3rem; font-weight:700; color:#f5f5f5; }
+.hero span{ color:var(--gold); }
+
+/* CATEGORIAS */
+.categorias-scroll{ overflow-x:auto; scroll-behavior:smooth; }
+.categorias{ display:flex; gap:.8rem; padding:.5rem .3rem; width:max-content; }
+.btn-filter{
+  background:transparent;
+  border:1px solid var(--gold);
+  color:var(--gold);
+  transition:.3s;
+}
+.btn-filter:hover,
+.btn-filter.active{
+  background:var(--gold);
+  color:#000;
+}
+
+/* SECCIONES */
+.menu-section{ display:none; animation: fadeIn .4s ease; }
+.menu-section.active{ display:flex; }
+@keyframes fadeIn{
+  from{opacity:0; transform:translateY(10px);}
+  to{opacity:1; transform:translateY(0);}
+}
+
+/* CARDS */
+.card{
+  background:var(--card);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:28px;
+  overflow:hidden;
+  transition:.3s;
+  box-shadow:0 10px 25px rgba(0,0,0,.4);
+}
+.card:hover{ transform:translateY(-6px); }
+.card img{ height:260px; object-fit:cover; }
+.card-body{ padding:1.4rem; text-align:center; }
+.card p{ color:var(--gold); font-weight:600; font-size:1.2rem; }
+
+.btn-coffee{
+  background:var(--gold);
+  border:none;
+  border-radius:30px;
+  padding:8px 20px;
+  font-weight:600;
+  transition:.3s;
+}
+.btn-coffee:hover{
+  background:#fff;
+  color:#000;
+  transform:scale(1.05);
+}
+
+/* CARRITO FLOAT */
+.cart-btn{
+  position:fixed;
+  bottom:25px;
+  right:25px;
+  width:70px;
+  height:70px;
+  border-radius:50%;
+  background:var(--gold);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:1.8rem;
+  cursor:pointer;
+  box-shadow:0 10px 25px rgba(0,0,0,.6);
+  transition:.3s;
+}
+.cart-btn:hover{ transform:scale(1.1); }
+.cart-count{
+  position:absolute;
+  top:8px;
+  right:8px;
+  background:#000;
+  color:#fff;
+  border-radius:50%;
+  font-size:.8rem;
+  padding:3px 7px;
+}
+
+/* MODAL */
+.modal-content{
+  background:var(--card);
+  color:var(--text);
+  border-radius:20px;
+}
+
+/* ITEMS CARRITO */
+.cart-item{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:8px 0;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+.cart-item-name{ flex:1; }
+.cart-item-price{
+  font-weight:700;
+  color:var(--gold);
+  margin-right:10px;
+}
+.remove-btn{
+  background:none;
+  border:none;
+  color:#ff4d4d;
+  cursor:pointer;
+}
+
+/* BOTON ENVIAR */
+.btn-enviar{
+  width:100%;
+  background:var(--gold);
+  border:none;
+  padding:12px;
+  border-radius:30px;
+  font-weight:600;
+  margin-top:15px;
+  transition:.3s;
+}
+.btn-enviar:hover{
+  background:#fff;
+  color:#000;
+}
+
+footer{
+  background:#000;
+  padding:20px;
+  text-align:center;
+  margin-top:60px;
+}
+.cart-item{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:10px 0;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+
+
+
+.cart-total-row{
+  display:flex;
+  align-items:center;
+  padding-top:6px;
+  margin-top:6px;
+}
+
+
+.cart-total-name{
+  flex:1;
+  font-weight:600;
+}
+
+
+
+.cart-total-spacer{
+  width:35px;
+}
+
+.cart-item-price{
+  font-weight:700;
+  color:var(--gold);
+  width:75px;
+  text-align:right;
+}
+
+.cart-total-price{
+  width:75px;
+  text-align:right;
+  font-weight:700;
+  color:var(--gold);
+}
+
+</style>
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-lg">
+<div class="container">
+<a class="navbar-brand" href="#">☕ Coffee House</a>
+<button class="btn btn-sm text-warning ms-auto" onclick="toggleMode()">🌙</button>
+</div>
+</nav>
+
+<section class="hero">
+<div>
+<h1>Crepería <span>Coffee House</span></h1>
+<p>Donde el café se convierte en experiencia</p>
+</div>
+</section>
+
+<section class="container my-5">
+<h2 class="text-center mb-4">Nuestro Menú</h2>
+
+<div class="categorias-scroll mb-4">
+<div class="categorias">
+<button class="btn btn-filter active" onclick="mostrarSeccion('cafe',event)">☕ Frappes Especiales</button>
+<button class="btn btn-filter" onclick="mostrarSeccion('dulce',event)">🍫 Dulces</button>
+<button class="btn btn-filter" onclick="mostrarSeccion('salada',event)">🧀 Saladas</button>
+</div>
+</div>
+
+<!-- CAFES -->
+<div id="cafe" class="row g-4 menu-section active">
+
+<div class="col-6 col-lg-4">
+<div class="card h-100">
+<img src="img/cup-of-americano-black-coffee-in-restaurant-mexico-photo.webp">
+<div class="card-body">
+<h5>Café Americano</h5>
+<p>$25</p>
+<button class="btn btn-coffee" onclick="agregar('Café Americano',25)">+</button>
+</div>
+</div>
+</div>
+
+<div class="col-6 col-lg-4">
+<div class="card h-100">
+<img src="img/capuccino.webp">
+<div class="card-body">
+<h5>Capuccino</h5>
+<p>$35</p>
+<button class="btn btn-coffee" onclick="agregar('Capuccino',35)">+</button>
+</div>
+</div>
+</div>
+
+</div>
+
+<!-- DULCES -->
+<div id="dulce" class="row g-4 menu-section">
+<div class="col-md-4 col-6">
+<div class="card h-100">
+<img src="img/crepa_nutela.webp">
+<div class="card-body">
+<h5>Crepa Nutella</h5>
+<p>$65</p>
+<button class="btn btn-coffee" onclick="agregar('Crepa Nutella',65)">+</button>
+</div>
+</div>
+</div>
+</div>
+
+<!-- SALADAS -->
+<div id="salada" class="row g-4 menu-section">
+<div class="col-md-4 col-6">
+<div class="card h-100">
+<img src="img/Crepas_con_Jamon_Serrano_y_Queso_Crema_IMAGENES_01_480x480.webp">
+<div class="card-body">
+<h5>Crepa Jamón & Queso</h5>
+<p>$75</p>
+<button class="btn btn-coffee" onclick="agregar('Crepa Jamón & Queso',75)">+</button>
+</div>
+</div>
+</div>
+</div>
+
+</section>
+
+<div class="cart-btn" data-bs-toggle="modal" data-bs-target="#cartModal">
+🛒
+<span class="cart-count" id="cartCount">0</span>
+</div>
+
+<!-- MODAL CARRITO -->
+<div class="modal fade" id="cartModal">
+<div class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5>Tu Pedido</h5>
+<button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+</div>
+<div class="modal-body">
+<div id="lista"></div>
+<div class="cart-total-row">
+  <div class="cart-total-name">Total:</div>
+  <div class="cart-total-price">$<span id="total">0</span></div>
+  <div class="cart-total-spacer"></div>
+</div>
+
+
+
+
+<button class="btn-enviar" onclick="mostrarConfirmacion()">Enviar Pedido</button>
+</div>
+</div>
+</div>
+</div>
+
+<!-- MODAL CONFIRMACION -->
+<div class="modal fade" id="confirmModal">
+<div class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h5>¿Confirmar pedido?</h5>
+<button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+</div>
+<div class="modal-body text-center">
+<button class="btn btn-coffee m-2" onclick="confirmarPedido()">Confirmar</button>
+<button class="btn btn-secondary m-2" data-bs-dismiss="modal">Editar</button>
+<button class="btn btn-danger m-2" onclick="cancelarPedido()">Cancelar</button>
+</div>
+</div>
+</div>
+</div>
+
+<footer>
+© 2026 Coffee House Premium
+</footer>
+
+<script>
+let carrito=[];
+
+function mostrarSeccion(id,e){
+document.querySelectorAll('.menu-section').forEach(sec=>sec.classList.remove('active'));
+document.getElementById(id).classList.add('active');
+document.querySelectorAll('.btn-filter').forEach(btn=>btn.classList.remove('active'));
+e.target.classList.add('active');
+}
+
+function agregar(nombre,precio){
+carrito.push({nombre,precio});
+renderCarrito();
+}
+
+function eliminar(index){
+carrito.splice(index,1);
+renderCarrito();
+}
+
+function renderCarrito(){
+const lista=document.getElementById('lista');
+const totalSpan=document.getElementById('total');
+const cartCount=document.getElementById('cartCount');
+
+lista.innerHTML="";
+let total=0;
+
+carrito.forEach((item,index)=>{
+total+=item.precio;
+lista.innerHTML+=`
+<div class="cart-item">
+<div class="cart-item-name">${item.nombre}</div>
+<div class="cart-item-price">$${item.precio}</div>
+<button class="remove-btn" onclick="eliminar(${index})">✖</button>
+</div>`;
+});
+
+totalSpan.textContent=total;
+cartCount.textContent=carrito.length;
+}
+
+function mostrarConfirmacion(){
+if(carrito.length===0){
+alert("El carrito está vacío");
+return;
+}
+new bootstrap.Modal(document.getElementById('confirmModal')).show();
+}
+
+function confirmarPedido(){
+alert("Pedido enviado correctamente ✅");
+carrito=[];
+renderCarrito();
+bootstrap.Modal.getInstance(document.getElementById('confirmModal')).hide();
+bootstrap.Modal.getInstance(document.getElementById('cartModal')).hide();
+}
+
+function cancelarPedido(){
+if(confirm("¿Seguro que deseas cancelar el pedido?")){
+carrito=[];
+renderCarrito();
+bootstrap.Modal.getInstance(document.getElementById('confirmModal')).hide();
+bootstrap.Modal.getInstance(document.getElementById('cartModal')).hide();
+}
+}
+
+function toggleMode(){
+document.body.classList.toggle('light');
+}
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
